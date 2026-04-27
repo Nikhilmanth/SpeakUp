@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SpeakUp — Online English Learning Platform design system. All colors HSL. */
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary: Indigo */
+    --primary: 238 83% 60%;
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 238 83% 65%;
+
+    /* Secondary: Emerald */
+    --secondary: 160 84% 39%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 238 83% 60%;
+
+    --radius: 0.75rem;
+
+    /* Gradients (more subtle now) */
+    --gradient-hero: linear-gradient(135deg, hsl(238 83% 60%) 0%, hsl(238 83% 65%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
+    --gradient-warm: linear-gradient(135deg, hsl(238 83% 60%) 0%, hsl(160 84% 39%) 100%);
+    --gradient-cool: linear-gradient(135deg, hsl(210 40% 98%) 0%, hsl(210 40% 96%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+    --gradient-soft: linear-gradient(135deg, hsl(210 40% 96%) 0%, hsl(210 40% 94%) 100%);
+    --gradient-mesh: radial-gradient(at 20% 20%, hsl(238 83% 60% / 0.05) 0px, transparent 50%),
+                     radial-gradient(at 80% 10%, hsl(160 84% 39% / 0.05) 0px, transparent 50%);
+
+    /* Shadows (crisper, realistic) */
+    --shadow-soft: 0 2px 4px -2px hsl(222 47% 11% / 0.05), 0 4px 8px -2px hsl(222 47% 11% / 0.05);
+    --shadow-elevated: 0 10px 15px -3px hsl(222 47% 11% / 0.08), 0 4px 6px -4px hsl(222 47% 11% / 0.08);
+    --shadow-glow: 0 0 20px hsl(238 83% 60% / 0.2);
+    --shadow-glow-pink: 0 0 20px hsl(160 84% 39% / 0.2);
+
+    --transition-smooth: all 0.2s ease-in-out;
+    --transition-bounce: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 238 83% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 238 83% 60%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 238 83% 65%;
+    --primary-foreground: 222 47% 11%;
+    --primary-glow: 238 83% 70%;
+    --secondary: 160 84% 45%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 215 28% 17%;
+    --accent-foreground: 210 40% 98%;
+    --success: 160 84% 45%;
+    --success-foreground: 222 47% 11%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 222 47% 11%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 238 83% 65%;
+    --gradient-card: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 9%) 100%);
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02","cv03","cv04","cv11";
+  }
+  h1,h2,h3,h4 { @apply tracking-tight; }
+}
+
+@layer utilities {
+  .bg-gradient-hero { background: var(--gradient-hero); }
+  .bg-gradient-primary { background: var(--gradient-primary); }
+  .bg-gradient-warm { background: var(--gradient-warm); }
+  .bg-gradient-cool { background: var(--gradient-cool); }
+  .bg-gradient-soft { background: var(--gradient-soft); }
+  .bg-gradient-card { background: var(--gradient-card); }
+  .bg-gradient-mesh { background: var(--gradient-mesh); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-elevated { box-shadow: var(--shadow-elevated); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-glow-pink { box-shadow: var(--shadow-glow-pink); }
+  .transition-smooth { transition: var(--transition-smooth); }
+  .transition-bounce { transition: var(--transition-bounce); }
+  .text-gradient {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-warm {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glass {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+  .glass-strong {
+    background: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+  .ring-gradient {
+    position: relative;
+  }
+  .ring-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: var(--gradient-hero);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .animate-float { animation: float 7s ease-in-out infinite; }
+  .animate-float-slow { animation: float 11s ease-in-out infinite; }
+  .animate-blob { animation: blobMove 18s ease-in-out infinite; }
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2.2s linear infinite;
+  }
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradientX 8s ease infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-12px) }
+}
+@keyframes blobMove {
+  0%, 100% { transform: translate(0,0) scale(1) }
+  33% { transform: translate(30px,-20px) scale(1.08) }
+  66% { transform: translate(-20px,25px) scale(0.95) }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0 }
+  to { background-position: -200% 0 }
+}
+@keyframes gradientX {
+  0%,100% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px) }
+  to { opacity: 1; transform: translateY(0) }
+}
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out both; }
