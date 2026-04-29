@@ -49,7 +49,7 @@ export default function Lesson() {
     })();
   }, [lessonId]);
 
-  if (!lesson) return <AppLayout><div className="container py-12 text-muted-foreground">Loading…</div></AppLayout>;
+  if (!lesson) return <AppLayout><div className="container py-12 text-slate-400">Loading…</div></AppLayout>;
 
   const answerQuestion = (qid: string, idx: number) => {
     if (revealed[qid]) return;
@@ -94,12 +94,12 @@ export default function Lesson() {
   return (
     <AppLayout>
       <div className="container max-w-3xl py-8">
-        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4">
+        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4 text-slate-500 hover:text-slate-900">
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        <h1 className="text-3xl font-bold">{lesson.title}</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">{lesson.title}</h1>
 
-        <Card className="mt-6 bg-gradient-card">
+        <Card className="mt-6 border-slate-200 dark:border-slate-800">
           <CardContent className="prose prose-slate max-w-none p-6 dark:prose-invert prose-headings:tracking-tight prose-h2:text-xl prose-h2:mt-2 prose-h3:text-base prose-h3:mt-4 prose-p:leading-relaxed prose-table:my-4">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{lesson.body_md}</ReactMarkdown>
           </CardContent>
@@ -107,10 +107,10 @@ export default function Lesson() {
 
         {questions.length > 0 && (
           <>
-            <h2 className="mt-10 flex items-center gap-2 text-xl font-bold">
+            <h2 className="mt-10 flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white">
               <Sparkles className="h-5 w-5 text-primary" /> Practice
             </h2>
-            <p className="text-sm text-muted-foreground">Answer to see immediate feedback.</p>
+            <p className="text-sm text-slate-400">Answer to see immediate feedback.</p>
 
             <div className="mt-4 space-y-4">
               {questions.map((q, qi) => {
@@ -118,10 +118,10 @@ export default function Lesson() {
                 const wasRevealed = revealed[q.id];
                 const correct = wasRevealed && picked === q.correct_index;
                 return (
-                  <Card key={q.id}>
+                  <Card key={q.id} className="border-slate-200 dark:border-slate-800">
                     <CardContent className="p-5">
-                      <p className="mb-3 font-medium">
-                        <span className="mr-2 text-muted-foreground">Q{qi + 1}.</span>{q.prompt}
+                      <p className="mb-3 font-semibold text-slate-900 dark:text-white">
+                        <span className="mr-2 text-slate-400">Q{qi + 1}.</span>{q.prompt}
                       </p>
                       <div className="space-y-2">
                         {q.options.map((opt, i) => {
@@ -134,22 +134,22 @@ export default function Lesson() {
                               onClick={() => answerQuestion(q.id, i)}
                               disabled={wasRevealed}
                               className={cn(
-                                "flex w-full items-center justify-between rounded-lg border-2 p-3 text-left text-sm transition-smooth",
-                                !wasRevealed && "hover:border-primary hover:bg-primary/5",
-                                wasRevealed && isAnswer && "border-success bg-success/10",
-                                wasRevealed && isPicked && !isAnswer && "border-destructive bg-destructive/10",
-                                wasRevealed && !isAnswer && !isPicked && "opacity-60"
+                                "flex w-full items-center justify-between rounded-lg border-2 p-3 text-left text-sm transition-colors",
+                                !wasRevealed && "hover:border-primary hover:bg-primary/5 border-slate-200 dark:border-slate-700",
+                                wasRevealed && isAnswer && "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30",
+                                wasRevealed && isPicked && !isAnswer && "border-red-500 bg-red-50 dark:bg-red-950/30",
+                                wasRevealed && !isAnswer && !isPicked && "opacity-50 border-slate-200 dark:border-slate-700"
                               )}
                             >
-                              <span>{opt}</span>
-                              {wasRevealed && isAnswer && <CheckCircle2 className="h-5 w-5 text-success" />}
-                              {wasRevealed && isPicked && !isAnswer && <XCircle className="h-5 w-5 text-destructive" />}
+                              <span className={wasRevealed && isAnswer ? "text-emerald-700 dark:text-emerald-400 font-medium" : "text-slate-700 dark:text-slate-300"}>{opt}</span>
+                              {wasRevealed && isAnswer && <CheckCircle2 className="h-5 w-5 text-emerald-500" />}
+                              {wasRevealed && isPicked && !isAnswer && <XCircle className="h-5 w-5 text-red-500" />}
                             </button>
                           );
                         })}
                       </div>
                       {wasRevealed && (
-                        <div className={cn("mt-3 rounded-lg p-3 text-sm", correct ? "bg-success/10 text-success-foreground" : "bg-muted")}>
+                        <div className={cn("mt-3 rounded-lg p-3 text-sm", correct ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400" : "bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400")}>
                           <span className="font-semibold">{correct ? "Correct!" : "Not quite."}</span> {q.explanation}
                         </div>
                       )}
@@ -161,10 +161,10 @@ export default function Lesson() {
           </>
         )}
 
-        <div className="mt-8 flex items-center justify-between gap-4 rounded-2xl border bg-gradient-soft p-5">
+        <div className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-5">
           <div>
-            <div className="font-semibold">Ready to finish?</div>
-            <div className="text-sm text-muted-foreground">
+            <div className="font-bold text-slate-900 dark:text-white">Ready to finish?</div>
+            <div className="text-sm text-slate-400">
               {questions.length > 0 ? `${correctCount} / ${questions.length} correct so far · +${lesson.xp_reward + correctCount * 2} XP` : `Earn ${lesson.xp_reward} XP`}
             </div>
           </div>

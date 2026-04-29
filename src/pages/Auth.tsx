@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Sparkles } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 const schema = z.object({
   email: z.string().trim().email("Please enter a valid email").max(255),
@@ -69,17 +69,17 @@ export default function Auth() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-background">
       <header className="container flex h-16 items-center">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary shadow-sm">
-            <Sparkles className="h-4 w-4 text-primary-foreground" />
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+            <BookOpen className="h-4 w-4" />
           </div>
-          <span className="font-bold text-slate-900 dark:text-white">SpeakUp</span>
+          <span className="text-lg font-bold text-slate-900 dark:text-white">SpeakUp</span>
         </Link>
       </header>
       <main className="flex flex-1 items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-xl border-slate-200 dark:border-slate-800">
           <CardHeader>
-            <CardTitle className="text-2xl">{mode === "signup" ? "Create your account" : "Welcome back"}</CardTitle>
+            <CardTitle className="text-2xl font-extrabold text-slate-900 dark:text-white">{mode === "signup" ? "Create your account" : "Welcome back"}</CardTitle>
             <CardDescription>
               {mode === "signup" ? "Start learning English in under a minute." : "Sign in to continue your streak."}
             </CardDescription>
@@ -100,16 +100,16 @@ export default function Auth() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === "signup" ? "new-password" : "current-password"} required />
               </div>
-              <Button type="submit" className="w-full" disabled={busy}>
+              <Button type="submit" className="w-full h-11 text-base" disabled={busy}>
                 {busy ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
               </Button>
             </form>
-            <p className="mt-4 text-center text-sm text-muted-foreground">
+            <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
               {mode === "signup" ? "Already have an account?" : "New to SpeakUp?"}{" "}
               <button
                 type="button"
                 onClick={() => setMode(mode === "signup" ? "signin" : "signup")}
-                className="font-medium text-primary hover:underline"
+                className="font-semibold text-primary hover:underline"
               >
                 {mode === "signup" ? "Sign in" : "Create one"}
               </button>

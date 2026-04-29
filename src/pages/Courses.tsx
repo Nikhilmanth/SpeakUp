@@ -17,6 +17,13 @@ interface Course {
   doneLessons: number;
 }
 
+const iconColors = [
+  { bg: "bg-indigo-50 dark:bg-indigo-950/40", color: "text-indigo-600 dark:text-indigo-400" },
+  { bg: "bg-emerald-50 dark:bg-emerald-950/40", color: "text-emerald-600 dark:text-emerald-400" },
+  { bg: "bg-amber-50 dark:bg-amber-950/40", color: "text-amber-600 dark:text-amber-400" },
+  { bg: "bg-sky-50 dark:bg-sky-950/40", color: "text-sky-600 dark:text-sky-400" },
+];
+
 export default function Courses() {
   const { user } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
@@ -42,50 +49,44 @@ export default function Courses() {
     })();
   }, [user]);
 
-  const tones = ["from-violet-500 to-fuchsia-500", "from-sky-500 to-indigo-500", "from-emerald-500 to-teal-500", "from-amber-400 to-orange-500"];
-
   return (
     <AppLayout>
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-mesh opacity-50" aria-hidden />
-        <div className="container relative py-8">
-          <div className="mb-8 animate-fade-in-up">
-            <h1 className="text-4xl font-bold">Courses</h1>
-            <p className="text-muted-foreground">Pick a course and start learning.</p>
-          </div>
-          <div className="grid gap-5 md:grid-cols-2">
-            {courses.map((c, i) => {
-              const pct = c.totalLessons ? Math.round((c.doneLessons / c.totalLessons) * 100) : 0;
-              const tone = tones[i % tones.length];
-              return (
-                <Link key={c.id} to={`/courses/${c.id}`} className="group">
-                  <Card className="relative h-full overflow-hidden bg-gradient-card transition-bounce hover:-translate-y-1 hover:shadow-elevated">
-                    <div className={`absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br ${tone} opacity-15 blur-3xl transition-smooth group-hover:opacity-35`} aria-hidden />
-                    <CardContent className="relative p-6">
-                      <div className="mb-4 flex items-start justify-between">
-                        <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${tone} text-white shadow-soft transition-bounce group-hover:scale-110 group-hover:rotate-6`}>
-                          <BookOpen className="h-6 w-6" />
-                        </div>
-                        <Badge variant="secondary" className="capitalize">{c.level}</Badge>
+      <div className="container py-8">
+        <div className="mb-8 animate-fade-in-up">
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Courses</h1>
+          <p className="mt-1 text-slate-500 dark:text-slate-400">Pick a course and start learning.</p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          {courses.map((c, i) => {
+            const pct = c.totalLessons ? Math.round((c.doneLessons / c.totalLessons) * 100) : 0;
+            const tone = iconColors[i % iconColors.length];
+            return (
+              <Link key={c.id} to={`/courses/${c.id}`} className="group">
+                <Card className="h-full border-slate-200 dark:border-slate-800 transition-all hover:-translate-y-0.5 hover:shadow-elevated">
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex items-start justify-between">
+                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${tone.bg} ${tone.color} transition-transform group-hover:scale-105`}>
+                        <BookOpen className="h-6 w-6" />
                       </div>
-                      <h3 className="text-xl font-semibold">{c.title}</h3>
-                      <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>
-                      <div className="mt-5 space-y-2">
-                        <div className="flex justify-between text-xs text-muted-foreground">
-                          <span>{c.doneLessons} / {c.totalLessons} lessons</span>
-                          <span className="font-bold text-gradient">{pct}%</span>
-                        </div>
-                        <Progress value={pct} />
+                      <Badge variant="secondary" className="capitalize">{c.level}</Badge>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">{c.title}</h3>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{c.description}</p>
+                    <div className="mt-5 space-y-2">
+                      <div className="flex justify-between text-xs text-slate-400">
+                        <span>{c.doneLessons} / {c.totalLessons} lessons</span>
+                        <span className="font-bold text-primary">{pct}%</span>
                       </div>
-                      <div className="mt-4 flex items-center text-sm font-semibold text-primary opacity-0 transition-smooth group-hover:opacity-100">
-                        Start learning <ArrowRight className="ml-1 h-4 w-4 transition-smooth group-hover:translate-x-1" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
+                      <Progress value={pct} />
+                    </div>
+                    <div className="mt-4 flex items-center text-sm font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      Start learning <ArrowRight className="ml-1 h-4 w-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </AppLayout>

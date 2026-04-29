@@ -61,26 +61,26 @@ export default function Profile() {
     if (error) toast.error(error.message); else toast.success("Saved!");
   };
 
-  if (!profile) return <AppLayout><div className="container py-12 text-muted-foreground">Loading…</div></AppLayout>;
+  if (!profile) return <AppLayout><div className="container py-12 text-slate-400">Loading…</div></AppLayout>;
 
   const lvl = getLevel(profile.xp);
 
   return (
     <AppLayout>
       <div className="container max-w-3xl space-y-6 py-8">
-        <h1 className="text-3xl font-bold">Profile</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">Profile</h1>
 
-        <Card>
+        <Card className="border-slate-200 dark:border-slate-800">
           <CardContent className="space-y-4 p-6">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-primary text-2xl font-bold text-primary-foreground">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-2xl font-bold text-white">
                 {(profile.display_name || "L")[0].toUpperCase()}
               </div>
               <div className="flex-1">
-                <div className="text-xl font-semibold">{profile.display_name || "Learner"}</div>
-                <div className="text-sm text-muted-foreground">{lvl.title} · {profile.xp} XP</div>
+                <div className="text-xl font-bold text-slate-900 dark:text-white">{profile.display_name || "Learner"}</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">{lvl.title} · {profile.xp} XP</div>
                 <Progress value={lvl.progress} className="mt-2" />
-                <div className="mt-1 text-xs text-muted-foreground">{lvl.progress}% to {lvl.nextMin} XP</div>
+                <div className="mt-1 text-xs text-slate-400">{lvl.progress}% to {lvl.nextMin} XP</div>
               </div>
             </div>
 
@@ -102,19 +102,19 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-slate-200 dark:border-slate-800">
           <CardContent className="p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold"><Award className="h-5 w-5 text-accent-foreground" /> Badges</h2>
+            <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white"><Award className="h-5 w-5 text-amber-500" /> Badges</h2>
             <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
               {allBadges.map((b) => {
                 const has = owned.has(b.id);
                 const Icon = ICONS[b.icon] || Award;
                 return (
-                  <div key={b.id} className={`group relative flex flex-col items-center gap-2 rounded-xl border p-3 text-center ${has ? "bg-gradient-soft" : "opacity-40"}`} title={b.description}>
-                    <div className={`flex h-12 w-12 items-center justify-center rounded-full ${has ? "bg-gradient-warm text-primary-foreground shadow-soft" : "bg-muted text-muted-foreground"}`}>
+                  <div key={b.id} className={`flex flex-col items-center gap-2 rounded-xl border p-3 text-center ${has ? "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900" : "border-slate-100 dark:border-slate-800 opacity-35"}`} title={b.description}>
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-full ${has ? "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400" : "bg-slate-100 dark:bg-slate-800 text-slate-400"}`}>
                       <Icon className="h-6 w-6" />
                     </div>
-                    <div className="text-xs font-medium leading-tight">{b.title}</div>
+                    <div className="text-xs font-medium leading-tight text-slate-700 dark:text-slate-300">{b.title}</div>
                   </div>
                 );
               })}
@@ -123,15 +123,15 @@ export default function Profile() {
         </Card>
 
         {weakTopics.length > 0 && (
-          <Card>
+          <Card className="border-slate-200 dark:border-slate-800">
             <CardContent className="p-6">
-              <h2 className="mb-3 text-lg font-semibold">Focus areas</h2>
-              <p className="mb-3 text-sm text-muted-foreground">Topics with the lowest accuracy across your quiz attempts.</p>
+              <h2 className="mb-3 text-lg font-bold text-slate-900 dark:text-white">Focus areas</h2>
+              <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">Topics with the lowest accuracy across your quiz attempts.</p>
               <ul className="space-y-2">
                 {weakTopics.map((w) => (
-                  <li key={w.tag} className="flex items-center justify-between rounded-lg border bg-card p-3">
-                    <span className="font-medium capitalize">{w.tag.replace(/_/g, " ")}</span>
-                    <span className={`text-sm font-bold ${w.pct < 50 ? "text-destructive" : "text-accent-foreground"}`}>{w.pct}%</span>
+                  <li key={w.tag} className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 p-3">
+                    <span className="font-medium capitalize text-slate-900 dark:text-white">{w.tag.replace(/_/g, " ")}</span>
+                    <span className={`text-sm font-bold ${w.pct < 50 ? "text-red-500" : "text-amber-600"}`}>{w.pct}%</span>
                   </li>
                 ))}
               </ul>
@@ -145,9 +145,9 @@ export default function Profile() {
 
 function Stat({ label, value, cap }: { label: string; value: any; cap?: boolean }) {
   return (
-    <div className="rounded-lg border bg-card p-2 text-center">
-      <div className="text-xs text-muted-foreground">{label}</div>
-      <div className={`font-semibold ${cap ? "capitalize" : ""}`}>{value}</div>
+    <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-2 text-center">
+      <div className="text-xs text-slate-400">{label}</div>
+      <div className={`font-bold text-slate-900 dark:text-white ${cap ? "capitalize" : ""}`}>{value}</div>
     </div>
   );
 }

@@ -87,7 +87,7 @@ export default function Quiz() {
   const seconds = useMemo(() => String(timeLeft % 60).padStart(2, "0"), [timeLeft]);
 
   if (!quiz || questions.length === 0) {
-    return <AppLayout><div className="container py-12 text-muted-foreground">Loading…</div></AppLayout>;
+    return <AppLayout><div className="container py-12 text-slate-400">Loading…</div></AppLayout>;
   }
 
   const q = questions[current];
@@ -99,20 +99,20 @@ export default function Quiz() {
     <AppLayout>
       <div className="container max-w-3xl py-8">
         <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{quiz.title}</h1>
-          <div className={cn("flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold", lowTime ? "border-destructive text-destructive" : "text-foreground")}>
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">{quiz.title}</h1>
+          <div className={cn("flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold", lowTime ? "border-red-300 text-red-600 bg-red-50 dark:border-red-800 dark:text-red-400 dark:bg-red-950/30" : "border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300")}>
             <Clock className="h-4 w-4" /> {minutes}:{seconds}
           </div>
         </div>
-        <div className="mb-2 flex justify-between text-xs text-muted-foreground">
+        <div className="mb-2 flex justify-between text-xs text-slate-400">
           <span>Question {current + 1} of {questions.length}</span>
           <span>{answeredCount} answered</span>
         </div>
         <Progress value={((current + 1) / questions.length) * 100} className="mb-6" />
 
-        <Card>
+        <Card className="border-slate-200 dark:border-slate-800">
           <CardContent className="p-6">
-            <p className="mb-4 text-lg font-medium">{q.prompt}</p>
+            <p className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">{q.prompt}</p>
             <div className="space-y-2">
               {q.options.map((opt, i) => (
                 <button
@@ -120,15 +120,15 @@ export default function Quiz() {
                   type="button"
                   onClick={() => setAnswers((a) => ({ ...a, [q.id]: i }))}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg border-2 p-3 text-left text-sm transition-smooth",
-                    picked === i ? "border-primary bg-primary/5" : "hover:border-primary/50"
+                    "flex w-full items-center gap-3 rounded-lg border-2 p-3 text-left text-sm transition-colors",
+                    picked === i ? "border-primary bg-primary/5" : "border-slate-200 dark:border-slate-700 hover:border-primary/50"
                   )}
                 >
-                  <span className={cn("flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-semibold",
-                    picked === i ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/40")}>
+                  <span className={cn("flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs font-bold",
+                    picked === i ? "border-primary bg-primary text-white" : "border-slate-300 dark:border-slate-600 text-slate-400")}>
                     {String.fromCharCode(65 + i)}
                   </span>
-                  {opt}
+                  <span className="text-slate-700 dark:text-slate-300">{opt}</span>
                 </button>
               ))}
             </div>
@@ -142,7 +142,7 @@ export default function Quiz() {
           {current < questions.length - 1 ? (
             <Button onClick={() => setCurrent((c) => c + 1)}>Next <ChevronRight className="ml-2 h-4 w-4" /></Button>
           ) : (
-            <Button onClick={submit} disabled={submitting} className="shadow-elevated">
+            <Button onClick={submit} disabled={submitting} className="shadow-sm">
               {submitting ? "Submitting…" : "Submit quiz"}
             </Button>
           )}

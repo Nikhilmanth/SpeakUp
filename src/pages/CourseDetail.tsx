@@ -35,28 +35,28 @@ export default function CourseDetail() {
     })();
   }, [user, courseId]);
 
-  if (!course) return <AppLayout><div className="container py-12 text-muted-foreground">Loading…</div></AppLayout>;
+  if (!course) return <AppLayout><div className="container py-12 text-slate-400">Loading…</div></AppLayout>;
 
   return (
     <AppLayout>
       <div className="container max-w-4xl py-8">
         <div className="mb-8">
           <Badge variant="secondary" className="capitalize">{course.level}</Badge>
-          <h1 className="mt-2 text-3xl font-bold">{course.title}</h1>
-          <p className="mt-2 text-muted-foreground">{course.description}</p>
+          <h1 className="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white">{course.title}</h1>
+          <p className="mt-2 text-slate-500 dark:text-slate-400">{course.description}</p>
         </div>
 
         <div className="space-y-6">
           {course.modules?.map((m: any, idx: number) => {
             const allDone = m.lessons.every((l: any) => doneLessons.has(l.id));
             return (
-              <Card key={m.id} className="overflow-hidden">
+              <Card key={m.id} className="border-slate-200 dark:border-slate-800 overflow-hidden">
                 <CardContent className="p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Module {idx + 1}</p>
-                      <h2 className="text-xl font-semibold">{m.title}</h2>
-                      <p className="text-sm text-muted-foreground">{m.description}</p>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Module {idx + 1}</p>
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-white">{m.title}</h2>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{m.description}</p>
                     </div>
                   </div>
 
@@ -65,12 +65,12 @@ export default function CourseDetail() {
                       const done = doneLessons.has(l.id);
                       return (
                         <li key={l.id}>
-                          <Link to={`/lessons/${l.id}`} className="flex items-center justify-between rounded-lg border bg-card p-3 transition-smooth hover:border-primary hover:shadow-soft">
+                          <Link to={`/lessons/${l.id}`} className="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-800 p-3 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
                             <div className="flex items-center gap-3">
-                              {done ? <CheckCircle2 className="h-5 w-5 text-success" /> : <Circle className="h-5 w-5 text-muted-foreground" />}
-                              <span className={done ? "line-through text-muted-foreground" : "font-medium"}>{l.title}</span>
+                              {done ? <CheckCircle2 className="h-5 w-5 text-emerald-500" /> : <Circle className="h-5 w-5 text-slate-300 dark:text-slate-600" />}
+                              <span className={done ? "line-through text-slate-400" : "font-medium text-slate-900 dark:text-white"}>{l.title}</span>
                             </div>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-3 text-xs text-slate-400">
                               <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{l.est_minutes}m</span>
                               <ChevronRight className="h-4 w-4" />
                             </div>
@@ -81,13 +81,13 @@ export default function CourseDetail() {
                   </ul>
 
                   {m.quizzes?.[0] && (
-                    <div className="mt-4 rounded-lg border bg-gradient-soft p-4">
+                    <div className="mt-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-4">
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <Trophy className="h-5 w-5 text-accent-foreground" />
+                          <Trophy className="h-5 w-5 text-amber-500" />
                           <div>
-                            <div className="font-semibold">{m.quizzes[0].title}</div>
-                            <div className="text-xs text-muted-foreground">{allDone ? "Module complete — take the quiz!" : "Complete all lessons to unlock"}</div>
+                            <div className="font-semibold text-slate-900 dark:text-white">{m.quizzes[0].title}</div>
+                            <div className="text-xs text-slate-400">{allDone ? "Module complete — take the quiz!" : "Complete all lessons to unlock"}</div>
                           </div>
                         </div>
                         <Button asChild disabled={!allDone} variant={allDone ? "default" : "outline"} size="sm">

@@ -20,7 +20,7 @@ export default function QuizResults() {
       .then(({ data }) => setAttempt(data));
   }, [attemptId]);
 
-  if (!attempt) return <AppLayout><div className="container py-12 text-muted-foreground">Loading…</div></AppLayout>;
+  if (!attempt) return <AppLayout><div className="container py-12 text-slate-400">Loading…</div></AppLayout>;
 
   const pct = Math.round((attempt.score / attempt.total) * 100);
   const passed = attempt.passed;
@@ -38,24 +38,24 @@ export default function QuizResults() {
   return (
     <AppLayout>
       <div className="container max-w-3xl py-8">
-        <Card className={`overflow-hidden ${passed ? "bg-gradient-primary" : "bg-gradient-warm"}`}>
-          <CardContent className="p-8 text-center text-primary-foreground">
+        <Card className={`overflow-hidden border-0 ${passed ? "bg-primary" : "bg-amber-500"}`}>
+          <CardContent className="p-8 text-center text-white">
             {passed ? <Trophy className="mx-auto mb-3 h-12 w-12" /> : <Target className="mx-auto mb-3 h-12 w-12" />}
-            <h1 className="text-3xl font-bold">{passed ? "You passed!" : "Keep going!"}</h1>
-            <p className="mt-2 opacity-90">{attempt.quizzes?.title}</p>
+            <h1 className="text-3xl font-extrabold">{passed ? "You passed!" : "Keep going!"}</h1>
+            <p className="mt-2 opacity-80 font-medium">{attempt.quizzes?.title}</p>
             <div className="mt-6 text-6xl font-extrabold">{pct}%</div>
-            <p className="mt-1 opacity-90">{attempt.score} of {attempt.total} correct</p>
+            <p className="mt-1 opacity-80">{attempt.score} of {attempt.total} correct</p>
           </CardContent>
         </Card>
 
         {weak.length > 0 && (
-          <Card className="mt-6 border-accent/40 bg-accent/5">
+          <Card className="mt-6 border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/20">
             <CardContent className="p-5">
-              <h2 className="mb-2 flex items-center gap-2 font-semibold"><Target className="h-4 w-4 text-accent-foreground" /> Focus areas</h2>
-              <p className="text-sm text-muted-foreground">Topics where you scored below 60%:</p>
+              <h2 className="mb-2 flex items-center gap-2 font-bold text-slate-900 dark:text-white"><Target className="h-4 w-4 text-amber-600" /> Focus areas</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Topics where you scored below 60%:</p>
               <ul className="mt-2 flex flex-wrap gap-2">
                 {weak.map((w) => (
-                  <li key={w.tag} className="rounded-full bg-card px-3 py-1 text-xs font-medium capitalize">
+                  <li key={w.tag} className="rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs font-medium capitalize text-slate-700 dark:text-slate-300">
                     {w.tag.replace(/_/g, " ")} — {w.pct}%
                   </li>
                 ))}
@@ -64,25 +64,25 @@ export default function QuizResults() {
           </Card>
         )}
 
-        <h2 className="mt-8 mb-3 text-xl font-bold">Review</h2>
+        <h2 className="mt-8 mb-3 text-xl font-bold text-slate-900 dark:text-white">Review</h2>
         <div className="space-y-3">
           {answers.map((a, i) => {
             const correct = a.picked === a.correct_index;
             return (
-              <Card key={i}>
+              <Card key={i} className="border-slate-200 dark:border-slate-800">
                 <CardContent className="p-5">
                   <div className="flex items-start gap-3">
-                    {correct ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" /> : <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />}
+                    {correct ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" /> : <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />}
                     <div className="flex-1">
-                      <p className="font-medium">{a.prompt}</p>
+                      <p className="font-semibold text-slate-900 dark:text-white">{a.prompt}</p>
                       <div className="mt-2 space-y-1 text-sm">
                         {a.options.map((opt: string, oi: number) => (
-                          <div key={oi} className={`rounded px-2 py-1 ${oi === a.correct_index ? "bg-success/10 text-success-foreground font-medium" : oi === a.picked && !correct ? "bg-destructive/10 text-destructive line-through" : "text-muted-foreground"}`}>
+                          <div key={oi} className={`rounded px-2 py-1 ${oi === a.correct_index ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 font-medium" : oi === a.picked && !correct ? "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 line-through" : "text-slate-400"}`}>
                             {String.fromCharCode(65 + oi)}. {opt}
                           </div>
                         ))}
                       </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{a.explanation}</p>
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{a.explanation}</p>
                     </div>
                   </div>
                 </CardContent>
