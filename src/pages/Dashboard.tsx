@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Flame, Trophy, Clock, Zap, ArrowRight } from "lucide-react";
+import { Flame, Trophy, Clock, TrendingUp, ArrowRight } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { getLevel } from "@/lib/gamification";
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
 
         {/* Stats */}
         <div className="grid gap-4 md:grid-cols-4">
-          <StatCard icon={Zap} label="Total XP" value={profile.xp} sub={lvl.title} bg="bg-indigo-50 dark:bg-indigo-950/40" color="text-indigo-600 dark:text-indigo-400" />
+          <StatCard icon={TrendingUp} label="Total XP" value={profile.xp} sub={lvl.title} bg="bg-indigo-50 dark:bg-indigo-950/40" color="text-indigo-600 dark:text-indigo-400" />
           <StatCard icon={Flame} label="Current streak" value={`${profile.current_streak} ${profile.current_streak === 1 ? "day" : "days"}`} sub={`Longest ${profile.longest_streak}`} bg="bg-orange-50 dark:bg-orange-950/40" color="text-orange-600 dark:text-orange-400" />
           <StatCard icon={Clock} label="Today" value={`${todayMinutes} min`} sub={`Goal ${profile.daily_goal_minutes} min`} bg="bg-sky-50 dark:bg-sky-950/40" color="text-sky-600 dark:text-sky-400" />
           <StatCard icon={Trophy} label="Level" value={lvl.title} sub={`${lvl.progress}% to ${lvl.nextMin} XP`} bg="bg-amber-50 dark:bg-amber-950/40" color="text-amber-600 dark:text-amber-400" />

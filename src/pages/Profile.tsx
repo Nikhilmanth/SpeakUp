@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Award, Sparkles, Flame, Trophy, Star, Medal } from "lucide-react";
+import { Award, Crown, Flame, Trophy, Star, Medal } from "lucide-react";
 import { getLevel } from "@/lib/gamification";
 import { toast } from "sonner";
 
-const ICONS: Record<string, any> = { sparkles: Sparkles, flame: Flame, trophy: Trophy, star: Star, medal: Medal, award: Award };
+const ICONS: Record<string, any> = { sparkles: Crown, flame: Flame, trophy: Trophy, star: Star, medal: Medal, award: Award };
 
 export default function Profile() {
   const { user } = useAuth();

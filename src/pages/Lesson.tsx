@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Sparkles, ArrowLeft } from "lucide-react";
+import { CheckCircle2, XCircle, Target, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { recordActivity } from "@/lib/progress";
@@ -108,7 +108,7 @@ export default function Lesson() {
         {questions.length > 0 && (
           <>
             <h2 className="mt-10 flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white">
-              <Sparkles className="h-5 w-5 text-primary" /> Practice
+              <Target className="h-5 w-5 text-primary" /> Practice
             </h2>
             <p className="text-sm text-slate-400">Answer to see immediate feedback.</p>
 

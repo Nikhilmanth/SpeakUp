@@ -4,13 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coffee, Zap, Flame } from "lucide-react";
+import { Coffee, Target, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const goals = [
   { id: 5, title: "Casual", desc: "5 min/day", icon: Coffee },
-  { id: 15, title: "Regular", desc: "15 min/day", icon: Zap },
+  { id: 15, title: "Regular", desc: "15 min/day", icon: Target },
   { id: 30, title: "Serious", desc: "30 min/day", icon: Flame },
 ];
 
