@@ -12,7 +12,6 @@ import splashImg from "@/assets/auth-splash.png";
 
 const schema = z.object({
   email: z.string().trim().email("Please enter a valid email").max(255),
-  password: z.string().min(6, "Password must be at least 6 characters").max(72),
   displayName: z.string().trim().min(1, "Name is required").max(50).optional(),
 });
 
@@ -28,9 +27,9 @@ export default function Auth() {
   const [params] = useSearchParams();
   const [mode, setMode] = useState<"signin" | "signup">(params.get("mode") === "signup" ? "signup" : "signin");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     document.title = mode === "signup" ? "Sign up · SpeakUp" : "Sign in · SpeakUp";
@@ -40,31 +39,23 @@ export default function Auth() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = schema.safeParse({ email, password, displayName: mode === "signup" ? displayName : undefined });
+    const parsed = schema.safeParse({ email, displayName: mode === "signup" ? displayName : undefined });
     if (!parsed.success) {
       toast.error(parsed.error.errors[0].message);
       return;
     }
     setBusy(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-            data: { display_name: displayName },
-          },
-        });
-        if (error) throw error;
-        toast.success("Welcome! Let's set up your learning plan.");
-        navigate("/onboarding");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast.success("Welcome back!");
-        navigate("/dashboard");
-      }
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: mode === "signup" ? { display_name: displayName } : undefined,
+        },
+      });
+      if (error) throw error;
+      setEmailSent(true);
+      toast.success("Magic link sent! Check your email to continue.");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
     } finally {
@@ -83,7 +74,11 @@ export default function Auth() {
       });
       if (error) throw error;
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      if (err.message.includes("Provider is not enabled")) {
+         toast.error(`Please enable ${provider} in your Supabase Dashboard > Authentication > Providers.`);
+      } else {
+         toast.error(err.message || "Something went wrong");
+      }
       setBusy(false);
     }
   };
@@ -146,25 +141,36 @@ export default function Auth() {
             </p>
           </div>
 
-          <form onSubmit={submit} className="space-y-5">
-            {mode === "signup" && (
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-slate-700 dark:text-slate-300">Display name</Label>
-                <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="e.g. Alex" autoComplete="name" className="h-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800" />
+          {emailSent ? (
+            <div className="text-center space-y-4 py-8">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+                <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-700 dark:text-slate-300">Email address</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" autoComplete="email" required className="h-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800" />
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Check your email</h3>
+              <p className="text-slate-500 dark:text-slate-400">
+                We sent a secure magic link to <strong>{email}</strong>. Click it to securely sign in.
+              </p>
+              <Button variant="outline" className="mt-4" onClick={() => setEmailSent(false)}>
+                Use a different email
+              </Button>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === "signup" ? "new-password" : "current-password"} required className="h-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800" />
-            </div>
-            <Button type="submit" className="w-full h-12 text-base font-semibold shadow-sm" disabled={busy}>
-              {busy ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
-            </Button>
-          </form>
+          ) : (
+            <form onSubmit={submit} className="space-y-5">
+              {mode === "signup" && (
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-slate-700 dark:text-slate-300">Display name</Label>
+                  <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="e.g. Alex" autoComplete="name" className="h-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800" />
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-slate-700 dark:text-slate-300">Email address</Label>
+                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" autoComplete="email" required className="h-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800" />
+              </div>
+              <Button type="submit" className="w-full h-12 text-base font-semibold shadow-sm" disabled={busy}>
+                {busy ? "Sending secure link…" : "Continue with Email"}
+              </Button>
+            </form>
+          )}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -198,7 +204,7 @@ export default function Auth() {
               type="button"
               onClick={() => {
                 setMode(mode === "signup" ? "signin" : "signup");
-                setEmail(""); setPassword(""); setDisplayName("");
+                setEmail(""); setDisplayName(""); setEmailSent(false);
               }}
               className="font-semibold text-primary hover:underline hover:text-primary/80 transition-colors"
             >
